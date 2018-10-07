@@ -18,8 +18,7 @@ module.exports = function(config) {
     coverageIstanbulReporter: {
       dir: 'coverage',
       reports: ['html', 'lcovonly', 'json'],
-      fixWebpackSourcePaths: true,
-      skipFilesWithNoCoverage: true
+      fixWebpackSourcePaths: true
     },
     port: 9876,
     browserDisconnectTimeout: 40000,
