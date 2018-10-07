@@ -103,7 +103,7 @@ describe('MDC Tabs', () => {
   <mdc-tab-bar [stacked]="stacked" [fixed]="fixed" [fade]="fade" [align]="align" [activeTabIndex]="activeTabIndex"
     [useAutomaticActivation]="useAutomaticActivation" [iconIndicator]="iconIndicator" (activated)="handleActivatedTab($event)">
     <mdc-tab-scroller>
-      <mdc-tab label="Flights" icon="airplanemode_active"></mdc-tab>
+      <mdc-tab label="Flights" icon="airplanemode_active" [disabled]="disabledTab"></mdc-tab>
       <mdc-tab label="Hotel" icon="hotel"></mdc-tab>
       <mdc-tab label="Favorites" icon="favorite"></mdc-tab>
       <mdc-tab>
@@ -122,6 +122,7 @@ class SimpleTest {
   useAutomaticActivation: boolean;
   activeTabIndex: number;
   iconIndicator: string;
+  disabledTab: boolean;
 
   handleActivatedTab(event: { index: number, tab: MdcTab }) { }
 }

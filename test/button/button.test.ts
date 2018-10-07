@@ -13,7 +13,7 @@ describe('MdcButton', () => {
       declarations: [
         SimpleButton,
         HrefButton,
-        IconButton,
+        IconButton
       ]
     });
     TestBed.compileComponents();

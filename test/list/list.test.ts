@@ -86,6 +86,7 @@ describe('MdcListModule', () => {
 
       fixture.detectChanges();
       expect(testComponent.listitem.selected).toBe(true);
+      expect(testInstance.singleSelection).toBe(true);
     });
 
     it('#first list item should be focused', () => {
@@ -139,8 +140,8 @@ describe('MdcListModule', () => {
     <mdc-list-group #group>
       <mdc-list-group-subheader>Grouped Lists</mdc-list-group-subheader>
       <mdc-list [dense]="isDense" [border]="isBordered" [twoLine]="twoLine" [singleSelection]="singleSelection"
-       [avatar]="isAvatar" [interactive]="isInteractive">
-        <mdc-list-item #listitem mdcListItemGraphic [selected]="isItemSelected">Test
+       [avatar]="isAvatar" [interactive]="isInteractive" useSelectedClass [verticalOrientation]="verticalOrientation">
+        <mdc-list-item #listitem mdcListItemGraphic [selected]="isItemSelected" [disabled]="false">Test
           <mdc-icon mdcListItemMeta>info</mdc-icon>
         </mdc-list-item>
         <mdc-list-item mdcListItemGraphic>Test
@@ -167,6 +168,7 @@ class SimpleList {
   isInset: boolean = false;
   isPadded: boolean = false;
   singleSelection: boolean;
+  verticalOrientation: boolean;
 
   @ViewChild('divider') divider: MdcListDivider;
   @ViewChild('listitem') listitem: MdcListItem;

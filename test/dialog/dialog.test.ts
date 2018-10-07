@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import {
   MdcDialog,
   MdcDialogModule,
+  MdcDialogComponent,
   MdcDialogRef
 } from '@angular-mdc/web';
 
@@ -70,9 +71,9 @@ describe('MdcDialog Service', () => {
         <mdc-dialog-content>
           Let Google help apps determine location.
         </mdc-dialog-content>
-        <mdc-dialog-actions>
-          <button mdcDialogButton>Decline</button>
-          <button mdcDialogButton>Accept</button>
+        <mdc-dialog-actions [stacked]="stacked">
+          <button mdcDialogButton mdcDialogAction="close">Decline</button>
+          <button mdcDialogButton [default]="default" mdcDialogAction="accept">Accept</button>
         </mdc-dialog-actions>
       </mdc-dialog-surface>
     </mdc-dialog-container>
@@ -80,6 +81,9 @@ describe('MdcDialog Service', () => {
   `,
 })
 class SimpleDialog {
+  stacked: boolean;
+  default: boolean;
+
   constructor(public dialogRef: MdcDialogRef<SimpleDialog>) { }
 }
 

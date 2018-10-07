@@ -85,7 +85,7 @@ describe('MdcDrawer', () => {
     </mdc-drawer-header>
     <mdc-drawer-content>
       <mdc-list-group>
-        <mdc-list>
+        <mdc-list useActivatedClass>
           <mdc-list-item>
             <mdc-icon mdc-list-item-start>home</mdc-icon>Home
           </mdc-list-item>
