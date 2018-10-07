@@ -1,11 +1,12 @@
-import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, ElementRef, DebugElement, ViewChild } from '@angular/core';
+import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import {
   MdcDrawerModule,
   MdcListModule,
   MdcIconModule,
+  MdcListItem,
   MdcDrawer
 } from '@angular-mdc/web';
 
@@ -52,19 +53,40 @@ describe('MdcDrawer', () => {
       expect(testInstance.permanent).toBe(true);
     });
 
-    it('#should set modal', () => {
+    it('#should set modal', fakeAsync(() => {
+      const listItemDebugElement = fixture.debugElement.query(By.directive(MdcListItem));
+      const listItemInstance = listItemDebugElement.injector.get<MdcListItem>(MdcListItem);
+
       testComponent.drawer = 'modal';
       fixture.detectChanges();
+      flush();
 
       testInstance.open = true;
       fixture.detectChanges();
+      flush();
+
       expect(testInstance.open).toBe(true);
-    });
+      listItemInstance.getListItemElement().click();
+      fixture.detectChanges();
+      flush();
+
+      // expect(testInstance.open).toBe(false);
+    }));
 
     it('#should be open', () => {
       testInstance.open = true;
       fixture.detectChanges();
       expect(testInstance.open).toBe(true);
+    });
+
+    it('#should have fixed adjust element', () => {
+      expect(testInstance.fixedAdjustElement).toBeDefined();
+    });
+
+    it('#should not have fixed adjust element', () => {
+      testInstance.fixedAdjustElement = null;
+      fixture.detectChanges()
+      expect(testInstance.fixedAdjustElement).toBeNull();
     });
 
     it('#should be closed after click', () => {
@@ -80,7 +102,8 @@ describe('MdcDrawer', () => {
 
 @Component({
   template: `
-  <mdc-drawer [drawer]="drawer" [open]="open" [fixedAdjustElement]="testcontent">
+  <button (click)="testDrawer.open = !testDrawer.open" #openButton></button>
+  <mdc-drawer #testDrawer [drawer]="drawer" [open]="open" [fixedAdjustElement]="testcontent">
     <mdc-drawer-header title='Test' subtitle='Testing'>
     </mdc-drawer-header>
     <mdc-drawer-content>
@@ -120,4 +143,7 @@ describe('MdcDrawer', () => {
 class SimpleTest {
   drawer: string = 'permanent';
   open: boolean;
+
+  @ViewChild('testcontent') testContent;
+  @ViewChild('openButton') openButton: ElementRef<HTMLButtonElement>;
 }
