@@ -1,5 +1,5 @@
 import { NgModule, Directive, Component, DebugElement, Injector, TemplateRef, ViewContainerRef, ViewChild } from '@angular/core';
-import { inject, ComponentFixture, fakeAsync, TestBed, flush } from '@angular/core/testing';
+import { inject, ComponentFixture, fakeAsync, TestBed, flush, flushMicrotasks } from '@angular/core/testing';
 import { Location } from '@angular/common';
 import { SpyLocation } from '@angular/common/testing';
 import { By } from '@angular/platform-browser';
@@ -211,6 +211,7 @@ class PizzaMsg {
         </mdc-dialog-content>
         <mdc-dialog-actions stacked>
           <button mdcDialogButton mdcDialogAction="close">Decline</button>
+          <button mdcDialogButton mdcDialogAction>Do Nothing</button>
           <button mdcDialogButton default mdcDialogAction="accept">Accept</button>
         </mdc-dialog-actions>
       </mdc-dialog-surface>
