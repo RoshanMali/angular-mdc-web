@@ -3,7 +3,7 @@
     "declaration": false,
     "sourceMap": true,
     "target": "es5",
-    "module": "commonjs",
+    "module": "es2015",
     "moduleResolution": "node",
     "lib":[
       "es2017",
@@ -12,6 +12,10 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "typeRoots": ["../node_modules/@types"],
+    "types": [
+      "jasmine",
+      "node"
+    ],
     "rootDirs": [
       "./packages",
       "./test"
