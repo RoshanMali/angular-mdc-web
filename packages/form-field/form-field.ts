@@ -76,7 +76,7 @@ export class MdcFormField implements OnInit, OnDestroy {
           this.input.ripple!.activateRipple();
 
           if (typeof requestAnimationFrame !== 'undefined') {
-            requestAnimationFrame(() => this.input.ripple!.deactivateRipple())
+            requestAnimationFrame(() => this.input.ripple!.deactivateRipple());
           }
         })));
   }
