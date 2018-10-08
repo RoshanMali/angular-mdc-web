@@ -2,7 +2,7 @@ import { Component, DebugElement } from '@angular/core';
 import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { dispatchFakeEvent } from '../dispatch-events';
+import { dispatchFakeEvent } from '../testing/dispatch-events';
 
 import {
   MdcFormField,

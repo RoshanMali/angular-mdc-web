@@ -10,10 +10,10 @@ module.exports = function(config) {
       'text/x-typescript': ['ts','tsx']
     },
     files: [
-      'test/index.ts'
+      'test/test.ts'
     ],
     preprocessors: {
-      'test/index.ts': 'webpack'
+      'test/test.ts': 'webpack'
     },
     coverageIstanbulReporter: {
       dir: 'coverage',
