@@ -137,12 +137,12 @@ export class MdcTopAppBar implements AfterContentInit, AfterViewInit, OnDestroy 
       getTopAppBarHeight: () => this._getHostElement().clientHeight,
       notifyNavigationIconClicked: () => this.navigationSelected.emit({ source: this }),
       registerScrollHandler: (handler: EventListener) => {
-        if (!this._platform.isBrowser) { return; }
+        if (!this._platform.isBrowser || !this._scrollTarget) { return; }
 
         this._scrollTarget.addEventListener('scroll', handler);
       },
       deregisterScrollHandler: (handler: EventListener) => {
-        if (!this._platform.isBrowser) { return; }
+        if (!this._platform.isBrowser || !this._scrollTarget) { return; }
 
         this._scrollTarget.removeEventListener('scroll', handler);
       },

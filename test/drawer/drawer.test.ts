@@ -1,8 +1,12 @@
 import { Component, ElementRef, DebugElement, ViewChild } from '@angular/core';
-import { async, ComponentFixture, TestBed, fakeAsync, flush } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, flush, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { dispatchFakeEvent, dispatchKeyboardEvent } from '../testing/dispatch-events';
+
 import {
+  TAB,
+  DOWN_ARROW,
   MdcDrawerModule,
   MdcListModule,
   MdcIconModule,
@@ -69,8 +73,6 @@ describe('MdcDrawer', () => {
       listItemInstance.getListItemElement().click();
       fixture.detectChanges();
       flush();
-
-      // expect(testInstance.open).toBe(false);
     }));
 
     it('#should be open', () => {
@@ -89,14 +91,54 @@ describe('MdcDrawer', () => {
       expect(testInstance.fixedAdjustElement).toBeNull();
     });
 
-    it('#should be closed after click', () => {
-      testComponent.drawer = 'temporary';
+    it('#should be closed after clicking document', fakeAsync(() => {
+      testComponent.drawer = 'modal';
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+
+      const drawerScrim = document.body.querySelector('.mdc-drawer-scrim');
+
+      dispatchFakeEvent(drawerScrim, 'click');
+      fixture.detectChanges();
+      flush();
+
+      expect(testInstance.open).toBe(false);
+
+      testComponent.drawer = 'permanent';
+      testComponent.open = true;
+      fixture.detectChanges();
+    }));
+
+    it('#should handle list item click', fakeAsync(() => {
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+
+      const listItemDebugElement = fixture.debugElement.query(By.directive(MdcListItem));
+      const listItemInstance = listItemDebugElement.injector.get<MdcListItem>(MdcListItem);
+
+      listItemInstance.getListItemElement().click();
+      fixture.detectChanges();
+    }));
+
+    it('#should handle list item keydown', fakeAsync(() => {
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+
+      const listItemDebugElement = fixture.debugElement.query(By.directive(MdcListItem));
+      const listItemInstance = listItemDebugElement.injector.get<MdcListItem>(MdcListItem);
+
+      listItemInstance.focus();
       fixture.detectChanges();
 
-      testDebugElement.nativeElement.click();
+      dispatchKeyboardEvent(listItemInstance.getListItemElement(), 'keydown', DOWN_ARROW);
       fixture.detectChanges();
-      expect(testInstance.open).toBe(false);
-    });
+
+      dispatchKeyboardEvent(listItemInstance.getListItemElement(), 'keydown', TAB);
+      fixture.detectChanges();
+    }));
   });
 });
 
