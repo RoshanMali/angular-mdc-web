@@ -22,6 +22,7 @@ import { MdcSnackbarConfig } from './snackbar-config';
 
 @Component({
   moduleId: module.id,
+  selector: 'mdc-snackbar-container',
   host: {
     'role': 'alert'
   },
