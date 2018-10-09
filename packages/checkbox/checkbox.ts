@@ -93,9 +93,9 @@ export class MdcCheckbox implements AfterViewInit, ControlValueAccessor, OnDestr
     return {
       addClass: (className: string) => this._getHostElement().classList.add(className),
       removeClass: (className: string) => this._getHostElement().classList.remove(className),
-      setNativeControlAttr: (attr: string, value: string) => this._getInputElement().setAttribute(attr, value),
-      removeNativeControlAttr: (attr: string) => this._getInputElement().removeAttribute(attr),
-      getNativeControl: () => this._getInputElement(),
+      setNativeControlAttr: (attr: string, value: string) => this._inputElement.nativeElement.setAttribute(attr, value),
+      removeNativeControlAttr: (attr: string) => this._inputElement.nativeElement.removeAttribute(attr),
+      getNativeControl: () => this._inputElement.nativeElement,
       isIndeterminate: () => this.indeterminate,
       isChecked: () => this.checked,
       hasNativeControl: () => true,
@@ -216,7 +216,7 @@ export class MdcCheckbox implements AfterViewInit, ControlValueAccessor, OnDestr
 
   /** Focuses the checkbox. */
   focus(): void {
-    this._getInputElement().focus();
+    this._inputElement.nativeElement.focus();
   }
 
   // Toggles checkbox via user action. When it is indeterminate, toggle
@@ -272,7 +272,7 @@ export class MdcCheckbox implements AfterViewInit, ControlValueAccessor, OnDestr
   private _initRipple(): void {
     this.ripple.init({
       surface: this.elementRef.nativeElement,
-      activator: this._getInputElement()
+      activator: this._inputElement.nativeElement
     }, Object.assign(this.ripple.createAdapter(), {
       isUnbounded: () => true,
       isSurfaceDisabled: () => this._disabled
@@ -287,11 +287,6 @@ export class MdcCheckbox implements AfterViewInit, ControlValueAccessor, OnDestr
         .pipe(takeUntil(this._destroy), filter((e: AnimationEvent) =>
           e.target === this._getHostElement()))
         .subscribe(() => this._ngZone.run(() => this._foundation.handleAnimationEnd())));
-  }
-
-  /** Retrieves the DOM element of the input. */
-  private _getInputElement(): HTMLElement {
-    return this._inputElement.nativeElement;
   }
 
   /** Retrieves the DOM element of the component host. */
