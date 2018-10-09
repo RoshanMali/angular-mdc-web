@@ -305,12 +305,6 @@ export class MdcTopAppBar implements AfterContentInit, AfterViewInit, OnDestroy 
     }, 20);
   }
 
-  setScrollTarget(target: any): void {
-    this._foundation.destroyScrollHandler();
-    this._scrollTarget = target;
-    this._foundation.initScrollHandler();
-  }
-
   private _resetFixedShort(): void {
     this._getHostElement().classList.remove('mdc-top-app-bar--short-has-action-item');
     this._getHostElement().classList.remove('mdc-top-app-bar--short-collapsed');

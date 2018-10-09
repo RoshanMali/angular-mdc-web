@@ -89,8 +89,6 @@ export class MdcCheckbox implements AfterViewInit, ControlValueAccessor, OnDestr
   /** Emits whenever the component is destroyed. */
   private _destroy = new Subject<void>();
 
-  readonly componentInstance = MdcCheckbox;
-
   createAdapter() {
     return {
       addClass: (className: string) => this._getHostElement().classList.add(className),
@@ -186,7 +184,7 @@ export class MdcCheckbox implements AfterViewInit, ControlValueAccessor, OnDestr
     private _platform: Platform,
     private _ngZone: NgZone,
     private _changeDetectorRef: ChangeDetectorRef,
-    public elementRef: ElementRef,
+    public elementRef: ElementRef<HTMLElement>,
     public ripple: MdcRipple) { }
 
   ngAfterViewInit(): void {

@@ -1,8 +1,12 @@
 import { Component, DebugElement } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, flush, fakeAsync, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
+import { dispatchFakeEvent, dispatchKeyboardEvent } from '../testing/dispatch-events';
+
 import {
+  TAB,
+  DOWN_ARROW,
   MdcMenu,
   MdcMenuModule,
   MdcListModule,
@@ -63,6 +67,12 @@ describe('MdcMenu', () => {
       expect(testInstance.fixed).toBe(false);
     });
 
+    it('#menu should set hoist to body', () => {
+      testComponent.hoistToBody = true;
+      fixture.detectChanges();
+      expect(testInstance.hoistToBody).toBe(true);
+    });
+
     it('#menu should set anchor corner', () => {
       testComponent.anchorCorner = 'topEnd';
       fixture.detectChanges();
@@ -86,26 +96,54 @@ describe('MdcMenu', () => {
       fixture.detectChanges();
     });
 
-    it('#should handle body click event', () => {
-      document.body.click();
+    it('#should handle body click event', fakeAsync(() => {
+      testComponent.open = true;
       fixture.detectChanges();
-      expect(testInstance.open).toBe(false);
-    });
+      tick(500);
 
-    it('#should handle list item click', () => {
+      dispatchFakeEvent(document.body, 'click');
+      fixture.detectChanges();
+      tick(500);
+
+      expect(testInstance.open).toBe(false);
+    }));
+
+    it('#should handle list item click', fakeAsync(() => {
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+
       const listItemDebugElement = fixture.debugElement.query(By.directive(MdcListItem));
       const listItemInstance = listItemDebugElement.injector.get<MdcListItem>(MdcListItem);
 
-      listItemInstance.getListItemElement().click();
+      dispatchFakeEvent(listItemInstance.getListItemElement(), 'click');
       fixture.detectChanges();
-    });
+    }));
+
+    it('#should handle list item keydown', fakeAsync(() => {
+      testComponent.open = true;
+      fixture.detectChanges();
+      tick(500);
+
+      const listItemDebugElement = fixture.debugElement.query(By.directive(MdcListItem));
+      const listItemInstance = listItemDebugElement.injector.get<MdcListItem>(MdcListItem);
+
+      listItemInstance.focus();
+      fixture.detectChanges();
+
+      dispatchKeyboardEvent(listItemInstance.getListItemElement(), 'keydown', DOWN_ARROW);
+      fixture.detectChanges();
+
+      dispatchKeyboardEvent(listItemInstance.getListItemElement(), 'keydown', TAB);
+      fixture.detectChanges();
+    }));
   });
 });
 
 @Component({
   template: `
     <div mdcMenuSurfaceAnchor #testanchor>
-      <mdc-menu [open]="open" [anchorCorner]="anchorCorner" (select)="handleSelect($event)"
+      <mdc-menu [open]="open" [anchorCorner]="anchorCorner" (select)="handleSelect($event)" [hoistToBody]="hoistToBody"
        [anchor]="testanchor" [quickOpen]="quickOpen" [absolutePosition]="{ x: 5, y: 2}"
        [fixed]="fixed" [anchorMargin]="{top: 0, right: 0, bottom: 0, left: 0}">
          <mdc-menu-selection-group>
@@ -125,6 +163,7 @@ class MenuTest {
   anchorCorner: string = 'topStart';
   quickOpen: boolean;
   fixed: boolean = true;
+  hoistToBody: boolean;
 
   handleSelect(event) { }
 }
